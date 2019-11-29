@@ -45,3 +45,11 @@ The following packages were added:
   com.unity.modules.vr@1.0.0
   com.unity.modules.wind@1.0.0
   com.unity.modules.xr@1.0.0
+
+=== Fri Nov 29 10:25:10 2019
+
+Packages were changed.
+Update Mode: mergeDefaultDependencies
+
+The following packages were added:
+  com.ptc.vuforia.engine@8.5.9
