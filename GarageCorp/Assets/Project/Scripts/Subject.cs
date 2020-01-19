@@ -1,73 +1,120 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Game.ForEditor;
 
-public class Subject : MonoBehaviour
+namespace Game
 {
-    [SerializeField]
-    private byte _id = 0;
-
-    [SerializeField]
-    private float _speed = 1f;
-
-    [SerializeField, ReadOnly]
-    private Transform _hidePosition = null;
-
-    [SerializeField, ReadOnly]
-    private Transform _viewPosition = null;
-
-    [SerializeField, ReadOnly]
-    private bool _isVisible = false;
-
-    [SerializeField, ReadOnly]
-    private Vector3 _targetPosition = Vector3.zero;
-
-    public byte Id
+    /// <summary>
+    /// Класс, представляющий собой игровой объект.
+    /// </summary>
+    public class Subject : MonoBehaviour
     {
-        get => _id;
-        set => _id = value;
-    }
+        #region Поля
 
-    public bool IsVisible
-    {
-        get => _isVisible;
-        set
+        /// <summary>
+        /// Id объекта.
+        /// </summary>
+        [SerializeField]
+        private byte _id = 0;
+
+        /// <summary>
+        /// Скорость перемещения.
+        /// </summary>
+        [SerializeField]
+        private float _speed = 1f;
+
+        /// <summary>
+        /// Позиция, в которую скрывается объект.
+        /// </summary>
+        [SerializeField, ReadOnly]
+        private Transform _hidePosition = null;
+
+        /// <summary>
+        /// Позиция, в которой объект виден.
+        /// </summary>
+        [SerializeField, ReadOnly]
+        private Transform _viewPosition = null;
+
+        /// <summary>
+        /// Метка видимости объекта.
+        /// </summary>
+        [SerializeField, ReadOnly]
+        private bool _isVisible = false;
+
+        /// <summary>
+        /// Целевая позиция.
+        /// </summary>
+        [SerializeField, ReadOnly]
+        private Vector3 _targetPosition = Vector3.zero;
+
+        #endregion
+
+        #region Свойства
+
+        /// <summary>
+        /// Id объекта.
+        /// </summary>
+        public byte Id
         {
-            _isVisible = value;
-            if (IsVisible)
-                _targetPosition = ViewPosition;
-            else
+            get => _id;
+            set => _id = value;
+        }
+
+        /// <summary>
+        /// Метка видимости объекта.
+        /// </summary>
+        public bool IsVisible
+        {
+            get => _isVisible;
+            set
             {
-                _targetPosition = HidePosition;
+                _isVisible = value;
+                if (IsVisible)
+                    _targetPosition = ViewPosition;
+                else
+                {
+                    _targetPosition = HidePosition;
+                }
             }
         }
-    }
 
-    private Vector3 HidePosition
-    {
-        get => _hidePosition.position;
-        set => _hidePosition.position = value;
-    }
-    private Vector3 ViewPosition
-    {
-        get => _viewPosition.position;
-        set => _viewPosition.position = value;
-    }
-
-    private void Awake()
-    {
-        _viewPosition = GameObject.FindGameObjectWithTag("ViewPosition").transform;
-        _hidePosition = GameObject.FindGameObjectWithTag("HidePosition").transform;
-
-        IsVisible = false;
-    }
-
-    private void Update()
-    {
-        if (transform.position != _targetPosition)
+        /// <summary>
+        /// Позиция, в которую скрывается объект.
+        /// </summary>
+        private Vector3 HidePosition
         {
-            transform.position = Vector3.Lerp(transform.position, _targetPosition, _speed);
+            get => _hidePosition.position;
+            set => _hidePosition.position = value;
         }
+
+        /// <summary>
+        /// Позиция, в которой объект виден.
+        /// </summary>
+        private Vector3 ViewPosition
+        {
+            get => _viewPosition.position;
+            set => _viewPosition.position = value;
+        }
+
+        #endregion
+
+        #region Методы жизненного цикла
+
+        private void Awake()
+        {
+            _viewPosition = GameObject.FindGameObjectWithTag("ViewPosition").transform;
+            _hidePosition = GameObject.FindGameObjectWithTag("HidePosition").transform;
+
+            IsVisible = false;
+        }
+
+        private void Update()
+        {
+            if (transform.position != _targetPosition)
+            {
+                transform.position = Vector3.Lerp(transform.position, _targetPosition, _speed);
+            }
+        }
+
+        #endregion
     }
 }

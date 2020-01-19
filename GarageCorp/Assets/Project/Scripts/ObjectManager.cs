@@ -1,19 +1,34 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Game;
+﻿using UnityEngine;
 using Game.ForEditor;
 
 namespace Game.Controllers
 {
+    /// <summary>
+    /// Класс, управляющий появлением объектов.
+    /// </summary>
     public class ObjectManager : MonoBehaviour
     {
+        #region Поля
+
+        /// <summary>
+        /// Пул объектов.
+        /// </summary>
         [SerializeField]
         private Subject[] _objects = null;
 
+        /// <summary>
+        /// Id выбранного объекта.
+        /// </summary>
         [SerializeField, ReadOnly]
         private int _curObjectId = 0;
 
+        #endregion
+
+        #region Свойства
+
+        /// <summary>
+        /// Id выбранного объекта.
+        /// </summary>
         private int CurObjectId
         {
             get => _curObjectId;
@@ -24,6 +39,13 @@ namespace Game.Controllers
             }
         }
 
+        #endregion
+
+        #region Методы
+
+        /// <summary>
+        /// Метод, устанавливающий видимость объекта.
+        /// </summary>
         private void SetObject(int id)
         {
             foreach (var obj in _objects)
@@ -37,7 +59,10 @@ namespace Game.Controllers
             }
         }
 
-        private void CheckInput(SwipeDirection direction)
+        /// <summary>
+        /// Слушатель события OnSwipe.
+        /// </summary>
+        private void SwipeListener(SwipeDirection direction)
         {
             switch (direction)
             {
@@ -52,10 +77,21 @@ namespace Game.Controllers
             }
         }
 
+        #endregion
+
+        #region Методы жизненного цикла
+
         private void Start()
         {
-            SwipeController.OnSwipe += CheckInput;
+            SwipeController.OnSwipe += SwipeListener;
             SetObject(CurObjectId);
         }
+
+        private void OnDisable()
+        {
+            SwipeController.OnSwipe -= SwipeListener;
+        }
+
+        #endregion
     }
 }
