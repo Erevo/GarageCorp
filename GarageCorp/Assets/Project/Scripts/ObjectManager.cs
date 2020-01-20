@@ -68,11 +68,9 @@ namespace Game.Controllers
             {
                 case SwipeDirection.Left:
                     CurObjectId--;
-                    Debug.Log("Влево");
                     break;
                 case SwipeDirection.Right:
                     CurObjectId++;
-                    Debug.Log("Вправо");
                     break;
             }
         }
